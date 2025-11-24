@@ -35,18 +35,18 @@ nl2sql-selector/
 │   │   └── cluster_processor.py          # Clustering Processor
 │   ├── training/                         # Training Module
 │   │   ├── __init__.py
-│   │   └── trainer.py              # Full Pipeline Trainer
-│   ├── test/                       # Testing & Inference Module
+│   │   ├── SFT.py                        # Full Pipeline Trainer
+│   │   └── DPO.py                        # Full Pipeline Trainer
+│   ├── test/                             # Testing & Inference Module
 │   │   ├── __init__.py
-│   │   ├── selector.py             # Selector Inference
-│   │   ├── SC.py                   # SC Baseline Method
-│   │   └── evaluation.py           # Evaluation & Analysis
-├── models/                        # Output Directory
-│   ├── sft_model/              # SFT Stage Model
-│   └── dpo_model/              # DPO Stage Model
-├── requirements.txt                # Dependencies List
-├── main.py                         # Main Entry Point
-└── README.md                       # Project Documentation
+│   │   ├── selector.py                   # Selector Inference
+│   │   ├── SC.py                         # SC Baseline Method
+│   │   └── evaluation.py                 # Evaluation & Analysis
+├── models/                               # Output Directory
+│   ├── sft_model/                        # SFT Stage Model
+│   └── dpo_model/                        # DPO Stage Model
+├── requirements.txt                      # Dependencies List
+└── README.md                             # Project Documentation
 ```
 
 ## Installation
