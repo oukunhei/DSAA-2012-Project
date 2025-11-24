@@ -19,7 +19,6 @@ This project addresses the challenge of selecting the most appropriate SQL query
 nl2sql-selector/
 ├── data/                              # Data Directory
 │   ├── bird/                          # BIRD Dataset
-│   └── other_datasets/                # Other Datasets
 │   ├── train_set/                     # Training Data
 │   │   ├── train_sft/                 # SFT Training Data
 │   │   ├── train_dpo/                 # DPO Training Data
