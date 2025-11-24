@@ -41,10 +41,9 @@ nl2sql-selector/
 │   │   ├── selector.py             # Selector Inference
 │   │   ├── SC.py                   # SC Baseline Method
 │   │   └── evaluation.py           # Evaluation & Analysis
-├── outputs/                        # Output Directory
-│   ├── models/                     # Trained Models
-│   │   ├── sft_model/              # SFT Stage Model
-│   │   └── dpo_model/              # DPO Stage Model
+├── models/                        # Output Directory
+│   ├── sft_model/              # SFT Stage Model
+│   └── dpo_model/              # DPO Stage Model
 ├── requirements.txt                # Dependencies List
 ├── main.py                         # Main Entry Point
 └── README.md                       # Project Documentation
