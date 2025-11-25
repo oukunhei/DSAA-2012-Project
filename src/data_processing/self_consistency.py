@@ -9,7 +9,7 @@ from typing import List, Dict, Tuple
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
-from tools.sql_execution import execute_sql
+from src.tools.schema_info import execute_sql
 
 
 def group_by_execution_result(sql_list: List[str], db_path: str) -> Dict[str, List[str]]:
@@ -21,9 +21,9 @@ def group_by_execution_result(sql_list: List[str], db_path: str) -> Dict[str, Li
         key = frozenset(result)
         result_groups[key].append(sql)
 
-    represent_sqls =[]
+    represent_sqls ={}
     for group in result_groups.values():
-        represent_sqls.append({group[0]: len(group)})
+        represent_sqls[group[0]] = len(group)
 
     return result_groups, represent_sqls
 
