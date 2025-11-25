@@ -1,0 +1,10 @@
+【Natural Language Question】
+{nl_question}
+
+**************************
+【Database Schema Information】
+{schema_info}
+
+**************************
+【Candidate SQLs】
+{candidate_sqls}

@@ -1,0 +1,23 @@
+You are an experienced database expert.
+Now you need to choose the best SQL query among the candidates according to the natural language question and some database schema information. 
+
+Please respond with xml tags structured as follows:
+```xml
+<think>
+Your reasoning for the SQL query selection.
+</think>
+<sql>
+The final SQL query that answers the question.
+</sql>
+```
+
+【Natural Language Question】
+{nl_question}
+
+**************************
+【Database Schema Information】
+{schema_info}
+
+**************************
+【Candidate SQLs】
+{candidate_sqls}
