@@ -1,6 +1,3 @@
-# construct a Supervised Fine-Tuning (SFT) dataset
-# inputs: raw_data
-# outputs: train_set
 from pathlib import Path
 import os
 import sys
