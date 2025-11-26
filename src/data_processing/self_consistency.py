@@ -36,7 +36,7 @@ def self_consistency_select(sql_list: List[str], db_path: str) -> Tuple[str, int
 
 def SC(query_file: str):
     gt_json_path = "data/bird/dev/dev.json"
-    db_path_template = "data/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
+    db_path_template = "data/bird/dev/dev_databases/{db_id}/{db_id}.sqlite"
     output_json_path = f'src/data_processing/result_SC.json'
 
     with open(query_file, 'r', encoding='utf-8') as f:
@@ -58,8 +58,6 @@ def SC(query_file: str):
     for item in sqls:
         qid = item['question_id']
         sql_list = item['sql_candidates']
-        # if qid < 517:
-            # continue
         q = gt_map[qid]  
         db_id = q['db_id']
         db_path = db_path_template.format(db_id=db_id)
