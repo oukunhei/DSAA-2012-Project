@@ -55,9 +55,12 @@ def SC(query_file: str):
 
     # with open(output_json_path, 'r', encoding='utf-8') as f:
         # results = json.load(f)
-    for qid, sql_list in sqls.items(): 
-        qid = int(qid)
-        q = gt_map[qid]
+    for item in sqls:
+        qid = item['question_id']
+        sql_list = item['sql_candidates']
+        # if qid < 517:
+            # continue
+        q = gt_map[qid]  
         db_id = q['db_id']
         db_path = db_path_template.format(db_id=db_id)
         if not os.path.exists(db_path):
@@ -109,5 +112,5 @@ def SC(query_file: str):
     print(f"Self-Consistency Accuracy: {selfcons_matched}/{total} = {selfcons_matched / total:.2%}")
 
 if __name__ == "__main__":
-    query_file = "data/raw_data/raw_data_example.json"
+    query_file = "data/raw_data/xiyan_7B_bird_dev.json"
     SC(query_file)
