@@ -3,3 +3,4 @@ __pycache__/
 ipynb_checkpoints/
 .DS_Store
 data/bird/
+models/Qwen2.5-Coder-1.5B/
