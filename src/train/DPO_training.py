@@ -48,7 +48,7 @@ with open ("DSAA-2012-Project/data/train_set/DPO_set.json", "r", encoding="utf-8
 dataset = Dataset.from_list(data)
 
 training_args = DPOConfig(
-    max_length=1024,
+    max_length=512,
     max_prompt_length=512,
     
     # DPO核心参数
@@ -60,13 +60,19 @@ training_args = DPOConfig(
     per_device_train_batch_size=4,
     gradient_accumulation_steps=4,
     num_train_epochs=3,  # 训练轮数[citation:1]
+
+    gradient_checkpointing=True,        # 梯度检查点（显著减少显存）
+    dataloader_pin_memory=False,        # 禁用内存锁定
+    dataloader_num_workers=0,           # 减少数据加载 workers
     
     # 训练设置
     output_dir="DSAA-2012-Project/models/Qwen2.5-DPO-1.5B",
-    fp16=True,  # 如果硬件支持，可以启用混合精度训练[citation:9]
+    fp16=True, 
     logging_steps=10,
     save_steps=500,
     remove_unused_columns=False,
+    eval_strategy="no",                 # 训练期间关闭评估
+    report_to="none"
 )
 
 optimizer = optim.SGD(model.parameters(), lr=training_args.learning_rate)
