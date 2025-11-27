@@ -9,7 +9,7 @@ DEV_DB_PATH_TEMPLATE = "data/bird/dev/dev_databases/dev_databases/{db_id}/{db_id
 COLUMN_MEANING_PATH = "data/bird/dev/column_meaning.json"
 
 def build_prompt(nl_question, schema_info, candidate_sqls):
-    template_path = Path("src/templete/DPO_prompt.txt")
+    template_path = Path("src/templete/prompt.txt")
     template = template_path.read_text(encoding='utf-8')
     return template.format(nl_question=nl_question, schema_info=schema_info, candidate_sqls=candidate_sqls)
 
