@@ -10,10 +10,10 @@ from trl import SFTTrainer
 from datasets import Dataset
 
 # 1. 加载模型和分词器
-model_name = "Qwen/Qwen2.5-1.5B"  # 以Qwen模型为例，可替换为其他模型
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+model_path = "D:\\DSAA-2012-Project\\models\\Qwen2.5-Coder-1.5B"
+tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name,
+    model_path,
     torch_dtype=torch.bfloat16,
     device_map="auto"
 )

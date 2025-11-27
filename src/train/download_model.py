@@ -3,8 +3,8 @@ from pathlib import Path
 from huggingface_hub import snapshot_download
 import shutil
 
-model_name = "XGenerationLab/XiYanSQL-QwenCoder-7B-2504"
-model_cache_dir = "data/yunxiou/models"
+model_name = "Qwen/Qwen2.5-Coder-1.5B"
+model_cache_dir = "D:\\DSAA-2012-Project\\models"
 model_short_name = model_name.split('/')[-1]
 model_path = Path(model_cache_dir) / model_short_name
 
@@ -46,8 +46,7 @@ def download_model():
             local_dir=str(model_path),
             local_dir_use_symlinks=False,
             resume_download=True,
-            max_workers=4,
-            retries=5,
+            max_workers=4 
         )
         print("下载完成!")
         return True
