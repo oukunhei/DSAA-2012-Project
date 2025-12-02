@@ -3,9 +3,6 @@ Now you need to choose the best SQL query among the candidates according to the 
 
 Please respond with xml tags structured as follows:
 ```xml
-<think>
-Your reasoning for the SQL query selection.
-</think>
 <sql>
 The final SQL query that answers the question.
 </sql>
