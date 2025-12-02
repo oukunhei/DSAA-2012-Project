@@ -10,14 +10,14 @@ import sqlglot
 from collections import defaultdict
 import sys
 sys.path.append(os.path.abspath(os.path.join (os.path.dirname(__file__), '..')))
-from schema_info import get_db_schema
-from Selector import Selector
-from sql_execution import execute_sql
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from src.tools.schema_info import get_db_schema
+from src.test.Selector import Selector
+from src.tools.sql_execution import execute_sql
 
 # 常量定义
-DEV_DATA_PATH = '/ssd/yunxiou/data/yunxiou/bird/dev/dev.json'
-COLUMN_MEANING_PATH = "/ssd/yunxiou/data/yunxiou/bird/dev/column_meaning.json"
-DEV_DB_PATH_TEMPLATE = "/ssd/yunxiou/data/yunxiou/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
+DEV_DATA_PATH = 'data/bird/dev/dev.json'
+DEV_DB_PATH_TEMPLATE = "data/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
 
 def normalize_sql(sql: str) -> str:
     """
@@ -36,19 +36,18 @@ def normalize_sql(sql: str) -> str:
         return parsed.sql(dialect="sqlite", normalize=True, pretty=False, comments=False)
     except Exception as e:
         return sql
-    
-def extract_sql_query_answer(sql_generation_response: str) -> str:
-    try:
-        sql_query = re.search(r"<sql>(.*?)</sql>", sql_generation_response, flags=re.DOTALL)
-        if sql_query != None:
-            sql_query = sql_query.group(1).strip()
-            return normalize_sql(sql_query)
-        else:
-            print(f"Cannot extract SQL query from response")
-            return None
-    except Exception as e:
-        print(f"Error parsing sql generation response: {e}")
-        return None
+ 
+PLACEHOLDER = "The final SQL query that answers the question."   
+def extract_sql_query_answer(response_text: str) -> str:
+    # Find all <sql>...</sql> blocks
+    matches = re.findall(r"<sql>(.*?)</sql>", response_text, flags=re.DOTALL)
+    # Return the first non-placeholder, else None
+    for m in matches:
+        content = m.strip()
+        if content == PLACEHOLDER:
+            continue
+        return content
+    return None
 
 def validate_sql_query(query: str, db_path: str) -> dict:
     try:
@@ -91,12 +90,12 @@ def select_candidates(dataset, output_file) -> List[str]:
             db_id = item['db_id']
             nl_question = item['question']
             db_path = DEV_DB_PATH_TEMPLATE.format(db_id=db_id)            
-            schema_info = get_db_schema(db_path, add_column_meaning=True, column_meaning_json_path=COLUMN_MEANING_PATH)
+            schema_info = get_db_schema(db_path)
 
             response = selector.invoke(nl_question, schema_info, item['sql_candidates'])
 
             responses.append(response)
-            with open('/ssd/yunxiou/DSAA-2012/selector_responses.json', 'w', encoding='utf-8') as f:
+            with open('src/test/selector_responses.json', 'w', encoding='utf-8') as f:
                 json.dump(responses, f, indent=4, ensure_ascii=False)
 
         except RuntimeError as e:
@@ -128,8 +127,8 @@ def select_candidates(dataset, output_file) -> List[str]:
 
 if __name__ == "__main__":
     # 加载测试数据
-    with open('/ssd/yunxiou/DSAA-2012/qwen-7B-bird-dev.json', 'r', encoding='utf-8') as f:
+    with open('data/test_set/deepeye-qwen3-bird-dev.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-    output_file = "/ssd/yunxiou/DSAA-2012/predict_result.json"
+    output_file = "src/test/predict_output_deepeye.json"
     select_candidates(data, output_file=output_file)  
 
