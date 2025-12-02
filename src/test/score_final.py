@@ -10,9 +10,9 @@ from typing import List, Dict, Tuple
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from src.tools.sql_execution import execute_sql
 
-gt_json_path = "/ssd/yunxiou/data/yunxiou/bird/dev/dev.json"
-db_path_template = "/ssd/yunxiou/data/yunxiou/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
-final_sql_path = "/ssd/yunxiou/DSAA-2012/src/test/omni_final_sqls_5.json"
+gt_json_path = "data/bird/dev/dev.json"
+db_path_template = "data/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
+final_sql_path = "src/test/deepeye_final_sqls_4.json"
 
 def group_by_execution_result(sql_list: List[str], db_path: str) -> Dict[str, List[str]]:
     """return:
@@ -150,10 +150,10 @@ def validate(final_sqls):
     return results
 
 if __name__ == "__main__":
-    query_file = "/ssd/yunxiou/DSAA-2012/data/test_set/omni-bird-dev.json"
-    selector_result_file = "/ssd/yunxiou/DSAA-2012/data/test_result/omni_selector.json"
-    default_score = 5
+    query_file = "data/test_set/deepeye-qwen3-bird-dev.json"
+    selector_result_file = "data/test_result/deepeye_selector.json"
+    default_score = 4
     final_sqls = score(query_file, selector_result_file, default_score)
     results = validate(final_sqls)
-    with open ("/ssd/yunxiou/DSAA-2012/src/test/omni_final_execution_result.json", 'w', encoding='utf-8') as f:
+    with open ("data/test_result/deepeyefinal_execution_result_4.json", 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
