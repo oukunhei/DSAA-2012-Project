@@ -12,7 +12,7 @@ from src.tools.sql_execution import execute_sql
 
 gt_json_path = "data/bird/dev/dev.json"
 db_path_template = "data/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
-final_sql_path = "src/test/deepeye_final_sqls_4.json"
+final_sql_path = "data/test_result/deepeye_final_sqls_5.json"
 
 def group_by_execution_result(sql_list: List[str], db_path: str) -> Dict[str, List[str]]:
     """return:
@@ -152,8 +152,8 @@ def validate(final_sqls):
 if __name__ == "__main__":
     query_file = "data/test_set/deepeye-qwen3-bird-dev.json"
     selector_result_file = "data/test_result/deepeye_selector.json"
-    default_score = 4
+    default_score = 5
     final_sqls = score(query_file, selector_result_file, default_score)
     results = validate(final_sqls)
-    with open ("data/test_result/deepeyefinal_execution_result_4.json", 'w', encoding='utf-8') as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    with open ("data/test_result/deepeyefinal_execution_result_5.json", 'w', encoding='utf-8') as f:
+        json.dump(results, f, indent=2, ensure_ascii=False) 
