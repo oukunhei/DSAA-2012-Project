@@ -1,12 +1,13 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
 from pathlib import Path
 from typing import List
 
 import os
 
 def build_nl2sql_prompt(nl_question: str, schema_info: str, candidate_sqls: List[str]) -> str:
-    prompt_path = Path("/ssd/yunxiou/DSAA-2012/prompt.txt")
+    prompt_path = Path("src/templete/prompt.txt")
     template = prompt_path.read_text(encoding='utf-8')
 
     return template.format(nl_question=nl_question, schema_info=schema_info, candidate_sqls=candidate_sqls)
@@ -43,7 +44,7 @@ class Selector:
         print("正在加载模型...")
         
         # 检查是否已经存在合并后的模型
-        merged_output_dir = "/ssd/yunxiou/DSAA-2012/Qwen2.5-DPO-1.5B-merged"
+        merged_output_dir = "models/Qwen2.5-DPO-1.5B-merged"
         
         if os.path.exists(merged_output_dir):
             # 直接加载合并后的模型 - 添加 device_map 参数
@@ -55,7 +56,26 @@ class Selector:
             )
             self.tokenizer = AutoTokenizer.from_pretrained(merged_output_dir)
         else:
-            print("model not found. ")
+            # 加载基础模型并合并适配器
+            base_model_path = "models/Qwen2.5-Coder-1.5B"
+            dpo_dir = "models/Qwen2.5-DPO-1.5B/checkpoint-57"
+            base_model = AutoModelForCausalLM.from_pretrained(
+                base_model_path, 
+                dtype=torch.float16, 
+                device_map="auto"
+            )
+            tokenizer = AutoTokenizer.from_pretrained(base_model_path)
+
+            dpo_model = PeftModel.from_pretrained(base_model, dpo_dir)
+            self.model = dpo_model.merge_and_unload()
+            self.tokenizer = tokenizer
+            
+            # 保存合并后的模型
+            if not os.path.exists(merged_output_dir):
+                os.makedirs(merged_output_dir, exist_ok=True)
+                self.model.save_pretrained(merged_output_dir)
+                self.tokenizer.save_pretrained(merged_output_dir)
+                print(f"合并后的模型已保存到: {merged_output_dir}")
         
         self._is_loaded = True
         return self.model, self.tokenizer
@@ -74,8 +94,12 @@ class Selector:
         inputs = tokenizer(prompt, return_tensors="pt")
         inputs = {k: v.to(model.device) for k, v in inputs.items()}
         print(f"输入数据所在设备: {inputs['input_ids'].device}")
-        outputs = model.generate(**inputs, max_length=100)
-        return tokenizer.decode(outputs[0])
+
+        input_length = inputs['input_ids'].shape[1]
+
+        outputs = model.generate(**inputs, **self.generation_config)
+        generated_only = outputs[0][input_length:]
+        return tokenizer.decode(generated_only)
 
 if __name__ == "__main__":
     # 使用方式
