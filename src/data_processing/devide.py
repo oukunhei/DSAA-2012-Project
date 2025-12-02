@@ -30,8 +30,7 @@ def preparation(SC_file, SC_success_output_file, SC_fail_output_file):
         nl_question = dev_data[qid]['question']
         db_id = dev_data[qid]['db_id']
         db_path = DEV_DB_PATH_TEMPLATE.format(db_id=db_id)
-        schema = get_db_schema(db_path, add_column_meaning=True, column_meaning_json_path=COLUMN_MEANING_PATH)
-        schema_info = "\n".join(schema)
+        schema_info = get_db_schema(db_path)
 
         max_group_size = max(v for k,v in represent_sqls.items())
         SC_sql = next(k for k,v in represent_sqls.items() if v == max_group_size)
