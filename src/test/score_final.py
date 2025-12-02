@@ -12,7 +12,7 @@ from src.tools.sql_execution import execute_sql
 
 gt_json_path = "/ssd/yunxiou/data/yunxiou/bird/dev/dev.json"
 db_path_template = "/ssd/yunxiou/data/yunxiou/bird/dev/dev_databases/dev_databases/{db_id}/{db_id}.sqlite"
-final_sql_path = "/ssd/yunxiou/DSAA-2012/src/test/omni_final_sqls.json"
+final_sql_path = "/ssd/yunxiou/DSAA-2012/src/test/omni_final_sqls_5.json"
 
 def group_by_execution_result(sql_list: List[str], db_path: str) -> Dict[str, List[str]]:
     """return:
@@ -87,14 +87,14 @@ def score(query_file: str, selector_result_file: str, default_score: int = 4):
 def validate(final_sqls):  
     
     with open(gt_json_path, 'r') as f:
-        gt_map = json.load(f) 
+        questions = json.load(f) 
+    gt_map = {str(q['question_id']): q for q in questions}
     
     selfcons_matched = 0
     sql_exec_failed = 0
     results = {}  # 用于存储每个问题的详细结果
 
     for qid, sql in final_sqls.items():
-        qid = int(qid)
         if qid not in gt_map:
             print(f"[QID {qid}] ❌ 题号不在数据库内")
             continue
@@ -151,8 +151,9 @@ def validate(final_sqls):
 
 if __name__ == "__main__":
     query_file = "/ssd/yunxiou/DSAA-2012/data/test_set/omni-bird-dev.json"
-    selector_result_file = "/ssd/yunxiou/DSAA-2012/omni_selector.json"
-    final_sqls = score(query_file, selector_result_file, default_score=4)
+    selector_result_file = "/ssd/yunxiou/DSAA-2012/data/test_result/omni_selector.json"
+    default_score = 5
+    final_sqls = score(query_file, selector_result_file, default_score)
     results = validate(final_sqls)
     with open ("/ssd/yunxiou/DSAA-2012/src/test/omni_final_execution_result.json", 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
