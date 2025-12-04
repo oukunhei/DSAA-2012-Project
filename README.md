@@ -35,8 +35,9 @@ nl2sql-selector/
 │   │   └── cluster_processor.py          # Clustering Processor
 │   ├── training/                         # Training Module
 │   │   ├── __init__.py
-│   │   ├── SFT.py                        # Full Pipeline Trainer
-│   │   └── DPO.py                        # Full Pipeline Trainer
+│   │   ├── download_model.py             # Download Base Models
+│   │   ├── SFT_training.py               # Supervise Fine-tuning Trainer
+│   │   └── DPO_training.py               # Direct Preference Optimization Trainer
 │   ├── test/                             # Testing & Inference Module
 │   │   ├── __init__.py
 │   │   ├── selector.py                   # Selector Inference
